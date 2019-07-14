@@ -1,9 +1,18 @@
 
+echo =========================
+echo "** Expert use only"
+echo "** Fast deployment, without security at all. no warranty "
+echo "** Press Enter"
+echo =========================
+ mount | grep target 
+echo =========================
+echo ==Please Enter to Cont ==
+echo =========================
+read abcd
 
   date
-  cp debootstrap-devuan.sh         /opt/
+  mkdir /target 
   cp debootstrap-devuan.sh         /root/
-  cp /boot/debootstrap-devuan.sh   /root/
 
   echo debootstrap devuan
   apt-get update ; apt-get install debootstrap -y 
@@ -13,7 +22,10 @@
 # probably you dont want apple, systemd, wayland, redhat, nsa, android, microsoft.... in your computer....
 #  debootstrap  --no-check-gpg     --include=netbase,wpasupplicant  testing   .   http://ftp.debian.org/debian/  
 
-  PKG="wpasupplicant,netbase,tcc,login,passwd"
+
+  # PKG="wpasupplicant,netbase,ssh,login,passwd"
+  PKG="wpasupplicant,netbase,tcc,ssh,login,passwd"
+
   echo ===========================
   echo ThePackagesList-"$PKG"
   echo ===========================
@@ -26,20 +38,21 @@
   date
   mkdir /target/lib/modules
   mkdir /target/media/pendrive 
-  mkdir /target/media/sda1
-  mkdir /target/media/sdb1
+  mkdir /target/media/sd 
 
   echo 
   cp -v  /etc/network/interfaces  /target/etc/network/
   cp -v  /etc/network/wifi.conf   /target/etc/network/
-  cp -v  /etc/wifi.conf   /target/etc/wifi.conf 
+
+
+  mkdir  /target/target
+  mkdir  /target/media/
+  mkdir  /target/media/pendrive
 
   echo 
-  cp -v  /usr/local/bin/nexplorer    /target/usr/local/bin/ 
-  cp -v  /usr/local/bin/ndesk    /target/usr/local/bin/ 
+  cp -v  /usr/local/bin/lf          /target/usr/local/bin/ 
   cp -v  /usr/local/bin/nconfig     /target/usr/local/bin/ 
-  cp -v  /usr/local/bin/nswiss        /target/usr/local/bin/ 
-  cp -v  /usr/local/bin/onc           /target/usr/local/bin/ 
+  cp -v  /usr/local/bin/nswiss      /target/usr/local/bin/ 
 
   echo 
 
@@ -64,12 +77,27 @@ date
   echo please do place boot and modules now 
   echo Copy Boot
   cp -a /boot/        /target 
+
   echo Copy Kernel and Modules
+  mkdir  /target/lib/modules/
   cp -a -v /lib/modules/4.9.0-6-686-pae  /target/lib/modules/
   cp -a -v /lib/modules/4.9.0-6-686      /target/lib/modules/
+
   echo modules done 
   cp /root/debootstrap-devuan.sh   /target/boot/
   cp /root/debootstrap-devuan.sh   /target/root/
+  mount | grep target  
+
+  mount | grep target  
+  cd 
+  pwd
+
+  tar cvpfz /target-ready.tar.gz  /target 
+  du -hs /target-ready.tar.gz 
+
+  cd
+  pwd
+
   echo mission completed
   date
 
